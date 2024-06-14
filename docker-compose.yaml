@@ -1,0 +1,31 @@
+version: '1'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: akrom_django_docker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2609
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000  #
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=akrom_django_docker
+      - DB_USER=postgres
+      - DB_PASS=akrom_1102
+      - DB_HOST=db
+      - DB_PORT=5432
+
+volumes:
+  postgres_data:
